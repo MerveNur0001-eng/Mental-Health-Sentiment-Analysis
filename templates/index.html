@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Health Sentiment Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(45deg, #4A90E2, #A3DC9A);
+            animation: gradientAnimation 10s ease infinite;
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col items-center justify-center">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
+        <div class="text-center mb-8">
+            <img src="/static/brain_icon.png" alt="Brain Icon"
+                class="mx-auto mb-4 w-24 h-24 bg-gradient-to-br from-blue-400 to-green-400 rounded-full p-3">
+            <h1 class="text-4xl font-bold text-gray-800">Mental Health Sentiment Analysis</h1>
+            <p class="text-gray-600 mt-2">Share your thoughts and feelings. Our AI will analyze your emotional state and
+                provide personalized suggestions for your well-being.</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+            <div class="flex items-start mb-4">
+                <span class="text-blue-500 text-2xl mr-2">💭</span>
+                <h2 class="text-xl font-semibold text-gray-800">How are you feeling today?</h2>
+            </div>
+            <p class="text-gray-600 mb-4">Express your thoughts freely. This is a safe space to share what's on your
+                mind.</p>
+            <form action="/predict" method="POST" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Your thoughts and feelings</label>
+                    <textarea id="statement" name="statement" rows="4"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                        placeholder="Share what's on your mind..." maxlength="500" required></textarea>
+                    <p class="text-right text-gray-500 text-xs mt-1">0/500 characters</p>
+                </div>
+                <button type="submit"
+                    class="w-full bg-gradient-to-r from-blue-400 to-green-400 text-white py-2 px-4 rounded-md hover:from-blue-500 hover:to-green-500 transition duration-200 flex items-center justify-center">
+                    <span class="mr-2">🔍</span> Analyze My Feelings
+                </button>
+            </form>
+        </div>
+
+        {% if statement %}
+        <div class="mt-8 space-y-4">
+            <h1 class="text-3xl font-bold mb-6 text-center text-green-600">Analysis Complete</h1>
+            <p class="text-center text-gray-600 mb-6">Here are your personalized insights and recommendations</p>
+            <div class="bg-pink-50 p-4 rounded-md">
+                <h2 class="text-lg font-semibold text-gray-700 flex items-center">
+                    <span class="text-pink-500 text-xl mr-2">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M12.5441 20.89L13 21.1232L13.4554 20.8903L13.4565 20.8897L13.4582 20.8889L13.4629 20.8864L13.4783 20.8784C13.491 20.8718 13.5088 20.8624 13.5314 20.8504C13.5766 20.8263 13.6408 20.7915 13.722 20.7463C13.8844 20.6558 14.1148 20.5233 14.3958 20.3506C14.9569 20.0058 15.7243 19.4978 16.5556 18.8415C18.1896 17.5515 20.1538 15.6236 21.2198 13.1632C21.5379 12.575 22 11.2377 22 9.51724C22 7.88805 21.4922 6.29669 20.6001 5.09049C19.7049 3.88011 18.3693 3 16.75 3C16.1281 3 15.5495 3.21957 15.0723 3.47915C14.5871 3.74303 14.1382 4.08596 13.7574 4.41909C13.4761 4.66521 13.2197 4.91698 13 5.14682C12.7803 4.91698 12.5239 4.66521 12.2426 4.41909C11.8618 4.08596 11.4129 3.74303 10.9277 3.47915C10.4505 3.21957 9.87185 3 9.25 3C7.63071 3 6.29509 3.88011 5.39991 5.09049C4.50781 6.29669 4 7.88805 4 9.51724C4 10.3409 4.17496 11.2226 4.3692 11.9335H7.93381L10.1797 8.25L11.7225 12.0453L12.4648 10.9495H16V12.9176H13.5352L11.2775 16.25L9.82026 12.6649L9.06619 13.9016H5.13434C6.24474 16.0114 7.97762 17.6835 9.44442 18.8415C10.2757 19.4978 11.0431 20.0058 11.6042 20.3506C11.8852 20.5233 12.1156 20.6558 12.278 20.7463C12.3592 20.7915 12.4234 20.8263 12.4686 20.8504C12.4912 20.8624 12.509 20.8718 12.5217 20.8784L12.5371 20.8864L12.5418 20.8889L12.5441 20.89Z"
+                                fill="currentColor" />
+                            <path
+                                d="M2 11.9336V13.9017H5.12776C5.05022 13.7166 4.97807 13.547 4.91115 13.3897C4.65206 12.7807 4.47153 12.3564 4.36131 11.9336H2Z"
+                                fill="currentColor" />
+                        </svg>
+                    </span>
+                    Your Statement:
+                </h2>
+                <p class="text-gray-600">{{ statement }}</p>
+            </div>
+
+            <div class="bg-red-50 p-4 rounded-md">
+                <h2 class="text-lg font-semibold text-gray-700">Detected Sentiment:</h2>
+                <p class="text-gray-600 text-red-700 font-medium">{{ sentiment }}</p>
+                <p class="text-gray-500 text-sm">Based on the emotional tone of your message</p>
+            </div>
+
+            <div class="bg-purple-50 p-4 rounded-md">
+                <h2 class="text-lg font-semibold text-gray-700">Mental Health Status:</h2>
+                <p class="text-gray-600 text-purple-700 font-medium">{{ status if status else 'Not available (model not
+                    loaded)' }}</p>
+                <p class="text-gray-500 text-sm">General assessment of your current state</p>
+            </div>
+
+            <div class="bg-green-50 p-4 rounded-md">
+                <h2 class="text-lg font-semibold text-gray-700 flex items-center">
+                    <span class="text-green-500 text-xl mr-2">✔️</span> Personalized Suggestions:
+                </h2>
+                <p class="text-gray-600">{{ suggestions | safe }}</p>
+            </div>
+
+            <a href="/"
+                class="block w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-200 text-center mt-4">Try
+                Another Statement</a>
+        </div>
+        {% endif %}
+
+        <div class="mt-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div class="bg-white p-4 rounded-lg shadow-md border border-gray-200 text-center">
+                    <div class="mx-auto mb-2 w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center">
+                        <span class="text-blue-500 text-xl">🧠</span>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800">AI-Powered Analysis</h3>
+                    <p class="text-gray-600 mt-2">Advanced sentiment analysis using machine learning to understand your
+                        emotional state.</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-md border border-gray-200 text-center">
+                    <div class="mx-auto mb-2 w-10 h-10 bg-green-50 rounded-full flex items-center justify-center">
+                        <span class="text-green-500 text-xl">📈</span>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800">Personalized Insights</h3>
+                    <p class="text-gray-600 mt-2">Get tailored suggestions and resources based on your current mental
+                        state.</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-md border border-gray-200 text-center">
+                    <div class="mx-auto mb-2 w-10 h-10 bg-purple-50 rounded-full flex items-center justify-center">
+                        <span class="text-purple-500 text-xl">💬</span>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800">Safe & Private</h3>
+                    <p class="text-gray-600 mt-2">Your thoughts are processed securely and privately. No data is stored
+                        permanently.</p>
+                </div>
+            </div>
+
+            <div class="bg-blue-50 p-4 rounded-lg shadow-md border border-gray-200 text-center">
+                <div class="flex items-center justify-center mb-2">
+                    <span class="text-blue-500 text-xl mr-2">📊</span>
+                    <h3 class="text-lg font-semibold text-gray-800">Sentiment Distribution Insights</h3>
+                </div>
+                <p class="text-gray-600">Visual insights about sentiment patterns will appear here after analysis</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-8 p-8 bg-white rounded-lg shadow-lg w-full max-w-2xl">
+        <div class="text-center">
+            <h1
+                class="text-4xl font-bold text-gradient bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent">
+                About Mental Health AI</h1>
+            <p class="text-gray-600 mt-2">Our AI-powered platform uses advanced natural language processing and
+                sentiment analysis to help you understand your mental state and provide personalized recommendations for
+                your well-being.</p>
+        </div>
+
+        <div class="flex flex-col md:flex-row mt-6">
+            <div class="w-full md:w-1/2 p-4">
+                <h2 class="text-2xl font-semibold text-gray-800">How It Works</h2>
+                <ul class="mt-4 space-y-2">
+                    <li class="flex items-start">
+                        <span class="text-blue-500 mr-2 mt-1">•</span>
+                        <span>Share Your Thoughts<br>Express your feelings and thoughts in your own words</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-green-500 mr-2 mt-1">•</span>
+                        <span>AI Analysis<br>Our AI analyzes sentiment and emotional patterns</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-purple-500 mr-2 mt-1">•</span>
+                        <span>Get Insights<br>Receive personalized suggestions and resources</span>
+                    </li>
+                </ul>
+            </div>
+
+
+            <div class="w-full md:w-1/2 p-4 bg-blue-50 rounded-lg">
+                <h2 class="text-2xl font-semibold text-gray-800">Privacy & Security</h2>
+                <p class="text-gray-600 mt-2">Your mental health data is precious and private. We ensure:</p>
+                <ul class="mt-2 space-y-2">
+                    <li class="flex items-start">
+                        <span class="text-green-500 mr-2 mt-1">•</span>
+                        <span>No permanent storage of personal data</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-green-500 mr-2 mt-1">•</span>
+                        <span>Encrypted processing of all inputs</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-green-500 mr-2 mt-1">•</span>
+                        <span>Anonymous analysis results</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-green-500 mr-2 mt-1">•</span>
+                        <span>HIPAA-compliant security measures</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="mt-8 text-center">
+            <img src="/static/image_1.jpg" alt="About Mental Health AI Visual"
+                class="mx-auto w-100 rounded-lg shadow-md">
+        </div>
+    </div>
